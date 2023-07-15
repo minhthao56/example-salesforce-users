@@ -1,0 +1,1 @@
+SELECT name__c, email__c FROM users__c
