@@ -2,7 +2,7 @@ name: Deploy Salesforce Metadata
 on:
   push:
     branches:
-      - master  # Adjust the branch name if needed
+      - main  # Adjust the branch name if needed
 
 jobs:
   deploy:
@@ -13,22 +13,20 @@ jobs:
 
       - name: Install Salesforce CLI
         run: |
-          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-          mkdir sfdx
-          tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1
-          ./sfdx/install
+          sudo apt-get install curl
+          curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+          sudo apt-get install nodejs
+          node -v
+          npm install @salesforce/cli --global
 
       # Authenticate with Salesforce using JWT flow
       - name: Set up Salesforce CLI
-        env:
-          SFDX_INSTANCE_URL: https://login.salesforce.com
         run: |
-          echo ${{ secrets.SALESFORCE_USERNAME }}
-          sfdx force:auth:jwt:grant -u ${{ secrets.SALESFORCE_USERNAME }} -f <path_to_jwt_key_file> -i <salesforce_connected_app_consumer_key> -r $SFDX_INSTANCE_URL -d -s
+          echo "${{ secrets.JWT_PRIVATE_KEY }}" | sf login org jwt -username ${{ secrets.SALESFORCE_USERNAME }} -f $HOME/server.key -i ${{ secrets.CLIENT_ID }} --instance-url ${{ secrets.INSTANCE_URL }}
 
       # Deploy metadata
       - name: Deploy Metadata
         run: |
           # Add the necessary Salesforce CLI deployment commands here
           # For example:
-          # sfdx force:source:deploy -p force-app/main/default
+          sfdx force:source:deploy -p force-app/main/default
