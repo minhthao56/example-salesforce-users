@@ -18,15 +18,17 @@ jobs:
           tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1
           ./sfdx/install
 
+      # Authenticate with Salesforce using JWT flow
       - name: Set up Salesforce CLI
         env:
-            SFDX_INSTANCE_URL: https://login.salesforce.com
+          SFDX_INSTANCE_URL: https://login.salesforce.com
         run: |
-              echo ${{ secrets.SALESFORCE_USERNAME }} | sfdx force:auth:web:login -a ci-org -r $SFDX_INSTANCE_URL -d -s -u
-              echo ${{ secrets.SALESFORCE_PASSWORD }} | sfdx force:auth:web:login -a ci-org -r $SFDX_INSTANCE_URL -d -s -u
+          echo ${{ secrets.SALESFORCE_USERNAME }}
+          sfdx force:auth:jwt:grant -u ${{ secrets.SALESFORCE_USERNAME }} -f <path_to_jwt_key_file> -i <salesforce_connected_app_consumer_key> -r $SFDX_INSTANCE_URL -d -s
+
       # Deploy metadata
       - name: Deploy Metadata
         run: |
           # Add the necessary Salesforce CLI deployment commands here
           # For example:
-          sfdx force:source:deploy -p force-app/main/default
+          # sfdx force:source:deploy -p force-app/main/default
