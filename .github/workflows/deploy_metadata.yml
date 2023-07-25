@@ -23,10 +23,7 @@ jobs:
         env:
           SFDX_INSTANCE_URL: https://login.salesforce.com
         run: |
-          echo "instanceUrl: $SFDX_INSTANCE_URL" > $HOME/sfdx-url.tmp
-          echo "accessToken: ${{ secrets.SALESFORCE_USERNAME }}:${{ secrets.SALESFORCE_PASSWORD }}" > $HOME/sfdx-auth.tmp
-          sfdx force:auth:sfdxurl:store -f $HOME/sfdx-url.tmp -d -a ci-org
-          sfdx force:config:set defaultusername=ci-org
+          sfdx force:auth:web:login -a ci-org -r $SFDX_INSTANCE_URL -u ${{ secrets.SALESFORCE_USERNAME }} -p "${{ secrets.SALESFORCE_PASSWORD}}"
 
       # Deploy metadata
       - name: Deploy Metadata
