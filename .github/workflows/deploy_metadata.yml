@@ -2,7 +2,7 @@ name: Deploy Salesforce Metadata
 on:
   push:
     branches:
-      - main  # Adjust the branch name if needed
+      - master  # Adjust the branch name if needed
 
 jobs:
   deploy:
