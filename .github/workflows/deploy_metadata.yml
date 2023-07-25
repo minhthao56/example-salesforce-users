@@ -22,7 +22,7 @@ jobs:
       # Authenticate with Salesforce using JWT flow
       - name: Set up Salesforce CLI
         run: |
-          echo "${{ secrets.JWT_PRIVATE_KEY }}" | sf login org jwt --username minhthao5648-myxs@force.com -f server.key -i 3MVG9pRzvMkjMb6lZem2d3TGTEHtmLIWhH2vdDXmR2jyUh4JEQuPjy4dZZ9tz5ArVwK14nxPqC8.kYOaRqth8 --instance-url https://minhthao5648-testing-product.my.salesforce.com
+          echo "${{ secrets.JWT_PRIVATE_KEY }}" | sf login org jwt --username minhthao5648-myxs@force.com -f $HOME/server.key -i 3MVG9pRzvMkjMb6lZem2d3TGTEHtmLIWhH2vdDXmR2jyUh4JEQuPjy4dZZ9tz5ArVwK14nxPqC8.kYOaRqth8 --instance-url https://minhthao5648-testing-product.my.salesforce.com
 
       # Deploy metadata
       - name: Deploy Metadata
