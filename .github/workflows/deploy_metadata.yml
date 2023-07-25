@@ -18,13 +18,12 @@ jobs:
           tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1
           ./sfdx/install
 
-      # Authenticate with Salesforce using secrets
       - name: Set up Salesforce CLI
         env:
-          SFDX_INSTANCE_URL: https://login.salesforce.com
+            SFDX_INSTANCE_URL: https://login.salesforce.com
         run: |
-          sfdx force:auth:web:login -a ci-org -r $SFDX_INSTANCE_URL -u ${{ secrets.SALESFORCE_USERNAME }} -p "${{ secrets.SALESFORCE_PASSWORD}}"
-
+              echo ${{ secrets.SALESFORCE_USERNAME }} | sfdx force:auth:web:login -a ci-org -r $SFDX_INSTANCE_URL -d -s -u
+              echo ${{ secrets.SALESFORCE_PASSWORD }} | sfdx force:auth:web:login -a ci-org -r $SFDX_INSTANCE_URL -d -s -u
       # Deploy metadata
       - name: Deploy Metadata
         run: |
