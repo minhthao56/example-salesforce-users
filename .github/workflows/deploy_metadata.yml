@@ -20,9 +20,11 @@ jobs:
 
       # Authenticate with Salesforce using secrets
       - name: Set up Salesforce CLI
+        env:
+          SFDX_INSTANCE_URL: https://login.salesforce.com
         run: |
-          echo "instanceUrl: https://login.salesforce.com" > $HOME/sfdx-url.tmp
-          echo "accessToken: \${{ secrets.SALESFORCE_USERNAME }}:${{ secrets.SALESFORCE_PASSWORD }}" > $HOME/sfdx-auth.tmp
+          echo "instanceUrl: $SFDX_INSTANCE_URL" > $HOME/sfdx-url.tmp
+          echo "accessToken: ${{ secrets.SALESFORCE_USERNAME }}:${{ secrets.SALESFORCE_PASSWORD }}" > $HOME/sfdx-auth.tmp
           sfdx force:auth:sfdxurl:store -f $HOME/sfdx-url.tmp -d -a ci-org
           sfdx force:config:set defaultusername=ci-org
 
