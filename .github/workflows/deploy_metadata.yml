@@ -2,7 +2,7 @@ name: Deploy Salesforce Metadata
 on:
   push:
     branches:
-      - master  # Adjust the branch name if needed
+      - master
 
 jobs:
   deploy:
@@ -11,7 +11,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Salesforce CLI
+      - name: Install Salesforce CLI in NodeJS
         run: |
           sudo apt-get install curl
           curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
@@ -19,8 +19,7 @@ jobs:
           node -v
           npm install @salesforce/cli --global
 
-      # Authenticate with Salesforce using JWT flow
-      - name: Set up Salesforce CLI
+      - name: Set up Salesforce CLI using JWT flow
         run: |
           echo "${{ secrets.JWT_PRIVATE_KEY }}" > $GITHUB_WORKSPACE/server.key
           sf login org jwt --username minhthao56481dev@gmail.com -f server.key -i 3MVG9pRzvMkjMb6ksv3UngeW0pMGPTjwEyGUyZsUMkQTUOiEL5vehnbrPlIvyIA8zU69YZWwmql3tTzI2BERu --instance-url https://manabie8-dev-ed.develop.my.salesforce.com --alias dev_org_v8
@@ -28,6 +27,4 @@ jobs:
       # Deploy metadata
       - name: Deploy Metadata
         run: |
-          # Add the necessary Salesforce CLI deployment commands here
-          # For example:
           sf project deploy start  --source-dir ./ --target-org dev_org_v8
