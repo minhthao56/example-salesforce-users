@@ -23,11 +23,11 @@ jobs:
       - name: Set up Salesforce CLI
         run: |
           echo "${{ secrets.JWT_PRIVATE_KEY }}" > $GITHUB_WORKSPACE/server.key
-          sf login org jwt --username minhthao5648-myxs@force.com -f $GITHUB_WORKSPACE/server.key -i 3MVG9pRzvMkjMb6lZem2d3TGTEHtmLIWhH2vdDXmR2jyUh4JEQuPjy4dZZ9tz5ArVwK14nxPqC8.kYOaRqth8 --instance-url https://minhthao5648-testing-product.my.salesforce.com
+          sf login org jwt --username minhthao56481dev@gmail.com -f server.key -i 3MVG9pRzvMkjMb6ksv3UngeW0pMGPTjwEyGUyZsUMkQTUOiEL5vehnbrPlIvyIA8zU69YZWwmql3tTzI2BERu --instance-url https://manabie8-dev-ed.develop.my.salesforce.com --alias dev_org_v8
 
       # Deploy metadata
       - name: Deploy Metadata
         run: |
           # Add the necessary Salesforce CLI deployment commands here
           # For example:
-          sfdx force:source:deploy -p force-app/main/default
+          sf project deploy start  --source-dir ./ --target-org dev_org_v8
