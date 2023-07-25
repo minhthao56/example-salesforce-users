@@ -1,0 +1,28 @@
+name: Deploy Salesforce Metadata
+on:
+  push:
+    branches:
+      - master  # Adjust the branch name if needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Authenticate with Salesforce using secrets
+      - name: Set up Salesforce CLI
+        run: |
+          echo "instanceUrl: https://login.salesforce.com" > $HOME/sfdx-url.tmp
+          echo "accessToken: \${SALESFORCE_USERNAME}:${SALESFORCE_PASSWORD}" > $HOME/sfdx-auth.tmp
+          sfdx force:auth:sfdxurl:store -f $HOME/sfdx-url.tmp -d -a ci-org
+          sfdx force:config:set defaultusername=ci-org
+
+      # Deploy metadata
+      - name: Deploy Metadata
+        run: |
+          # Add the necessary Salesforce CLI deployment commands here
+          # For example:
+          sfdx force:source:deploy -p force-app/main/default
+
